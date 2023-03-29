@@ -12,6 +12,7 @@
 		9CA92C7529D39842001F2B8D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA92C7429D39842001F2B8D /* MainViewController.swift */; };
 		9CA92C7A29D39843001F2B8D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CA92C7929D39843001F2B8D /* Assets.xcassets */; };
 		9CA92C7D29D39843001F2B8D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CA92C7B29D39843001F2B8D /* LaunchScreen.storyboard */; };
+		9CA92C8529D3A5C0001F2B8D /* MainVerifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA92C8429D3A5C0001F2B8D /* MainVerifications.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		9CA92C7929D39843001F2B8D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9CA92C7C29D39843001F2B8D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9CA92C7E29D39843001F2B8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9CA92C8429D3A5C0001F2B8D /* MainVerifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVerifications.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				9CA92C7929D39843001F2B8D /* Assets.xcassets */,
 				9CA92C7B29D39843001F2B8D /* LaunchScreen.storyboard */,
 				9CA92C7E29D39843001F2B8D /* Info.plist */,
+				9CA92C8429D3A5C0001F2B8D /* MainVerifications.swift */,
 			);
 			path = DigiProTechnicalTest;
 			sourceTree = "<group>";
@@ -137,6 +140,7 @@
 				9CA92C7529D39842001F2B8D /* MainViewController.swift in Sources */,
 				9CA92C7129D39842001F2B8D /* AppDelegate.swift in Sources */,
 				9CA92C7329D39842001F2B8D /* SceneDelegate.swift in Sources */,
+				9CA92C8529D3A5C0001F2B8D /* MainVerifications.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

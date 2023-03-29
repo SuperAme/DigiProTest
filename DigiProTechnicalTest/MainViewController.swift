@@ -8,13 +8,31 @@
 import UIKit
 
 class MainViewController: UIViewController {
-
+    
+    private let manager = MainVerifications()
+    
+    let scrollView = UIScrollView()
+    let contentView = UIView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setupLoginUI()
+        setupScrollView()
+        setupViews()
+        
+        nameTextField.delegate = self
+        firstLastNameTextField.delegate = self
     }
-
+    
+    let errorLabel: UILabel = {
+        let errLbl = UILabel()
+        errLbl.translatesAutoresizingMaskIntoConstraints = false
+        errLbl.text = "Algunos campos están erroneos"
+        errLbl.textColor = .red
+        errLbl.isHidden = true
+        return errLbl
+    }()
+    
     let nameTextField: UITextField = {
         let nameTF = UITextField()
         nameTF.translatesAutoresizingMaskIntoConstraints = false
@@ -67,51 +85,102 @@ class MainViewController: UIViewController {
         return phoneTF
     }()
     
-    let loginButton: UIButton = {
+    let registerButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .systemBlue
         button.setTitle("Registrar", for: .normal)
         button.tintColor = .white
         button.layer.cornerRadius = 10
-//        button.addTarget(self, action: #selector(onLoginTouch), for: .touchUpInside)
+        //        button.addTarget(self, action: #selector(onLoginTouch), for: .touchUpInside)
         return button
     }()
     
-    func setupLoginUI() {
+    private func setupScrollView() {
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
         
-        view.addSubview(nameTextField)
-        view.addSubview(firstLastNameTextField)
-        view.addSubview(secondLastNameTextField)
-        view.addSubview(phoneTextField)
-        view.addSubview(loginButton)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        scrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        contentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        contentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+    }
+    
+    private func setupViews() {
+        
+        contentView.addSubview(errorLabel)
+        contentView.addSubview(nameTextField)
+        contentView.addSubview(firstLastNameTextField)
+        contentView.addSubview(secondLastNameTextField)
+        contentView.addSubview(mailTextField)
+        contentView.addSubview(phoneTextField)
+        contentView.addSubview(registerButton)
         
         NSLayoutConstraint.activate([
-            nameTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+            errorLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
+            errorLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
+            errorLabel.heightAnchor.constraint(equalToConstant: 30),
+            errorLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            nameTextField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30),
             nameTextField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
             nameTextField.heightAnchor.constraint(equalToConstant: 30),
-            nameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nameTextField.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             
             firstLastNameTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 30),
-            firstLastNameTextField.widthAnchor.constraint(equalTo: nameTextField.widthAnchor),
-            firstLastNameTextField.heightAnchor.constraint(equalTo: nameTextField.heightAnchor),
-            firstLastNameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
+            firstLastNameTextField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
+            firstLastNameTextField.heightAnchor.constraint(equalToConstant: 30),
+            firstLastNameTextField.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            
             secondLastNameTextField.topAnchor.constraint(equalTo: firstLastNameTextField.bottomAnchor, constant: 30),
-            secondLastNameTextField.widthAnchor.constraint(equalTo: firstLastNameTextField.widthAnchor),
-            secondLastNameTextField.heightAnchor.constraint(equalTo: firstLastNameTextField.heightAnchor),
-            secondLastNameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
-            phoneTextField.topAnchor.constraint(equalTo: secondLastNameTextField.bottomAnchor, constant: 30),
-            phoneTextField.widthAnchor.constraint(equalTo: secondLastNameTextField.widthAnchor),
-            phoneTextField.heightAnchor.constraint(equalTo: secondLastNameTextField.heightAnchor),
-            phoneTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
-            loginButton.topAnchor.constraint(equalTo: phoneTextField.bottomAnchor, constant: 60),
-            loginButton.widthAnchor.constraint(equalTo: phoneTextField.widthAnchor),
-            loginButton.heightAnchor.constraint(equalTo: phoneTextField.heightAnchor),
-            loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            secondLastNameTextField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
+            secondLastNameTextField.heightAnchor.constraint(equalToConstant: 30),
+            secondLastNameTextField.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            
+            mailTextField.topAnchor.constraint(equalTo: secondLastNameTextField.bottomAnchor, constant: 30),
+            mailTextField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
+            mailTextField.heightAnchor.constraint(equalToConstant: 30),
+            mailTextField.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            
+            phoneTextField.topAnchor.constraint(equalTo: mailTextField.bottomAnchor, constant: 30),
+            phoneTextField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
+            phoneTextField.heightAnchor.constraint(equalToConstant: 30),
+            phoneTextField.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            
+            registerButton.topAnchor.constraint(equalTo: phoneTextField.bottomAnchor, constant: 30),
+            registerButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
+            registerButton.heightAnchor.constraint(equalToConstant: 30),
+            registerButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            registerButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            
         ])
+    }
+    
+   
+}
+
+extension MainViewController: UITextFieldDelegate {
+    
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let text = textField.text {
+            if manager.validateTextField(text: text) {
+                print("OK")
+                errorLabel.isHidden = true
+                textField.layer.borderColor = UIColor.darkGray.cgColor
+            } else {
+                errorLabel.isHidden = false
+                textField.layer.borderColor = UIColor.red.cgColor
+            }
+        }
     }
 }
 
