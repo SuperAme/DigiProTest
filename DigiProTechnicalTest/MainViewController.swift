@@ -22,6 +22,9 @@ class MainViewController: UIViewController {
         
         nameTextField.delegate = self
         firstLastNameTextField.delegate = self
+        secondLastNameTextField.delegate = self
+        mailTextField.delegate = self
+        phoneTextField.delegate = self
     }
     
     let errorLabel: UILabel = {
@@ -67,7 +70,6 @@ class MainViewController: UIViewController {
         let mailTF = UITextField()
         mailTF.translatesAutoresizingMaskIntoConstraints = false
         mailTF.placeholder = "Escribe tu Email"
-        mailTF.isSecureTextEntry = true
         mailTF.textAlignment = .center
         mailTF.layer.borderColor = UIColor.darkGray.cgColor
         mailTF.layer.borderWidth = 1.0
@@ -85,6 +87,15 @@ class MainViewController: UIViewController {
         return phoneTF
     }()
     
+    let horizontalStack: UIStackView = {
+        let hStack = UIStackView()
+        hStack.translatesAutoresizingMaskIntoConstraints = false
+        hStack.axis = .horizontal
+        hStack.distribution = .fillEqually
+        hStack.spacing = 10
+        return hStack
+    }()
+    
     let registerButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -93,6 +104,17 @@ class MainViewController: UIViewController {
         button.tintColor = .white
         button.layer.cornerRadius = 10
         //        button.addTarget(self, action: #selector(onLoginTouch), for: .touchUpInside)
+        return button
+    }()
+    
+    let showInfoButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .systemBlue
+        button.setTitle("Lista de usuarios", for: .normal)
+        button.tintColor = .white
+        button.layer.cornerRadius = 10
+        button.addTarget(self, action: #selector(showList), for: .touchUpInside)
         return button
     }()
     
@@ -122,7 +144,12 @@ class MainViewController: UIViewController {
         contentView.addSubview(secondLastNameTextField)
         contentView.addSubview(mailTextField)
         contentView.addSubview(phoneTextField)
-        contentView.addSubview(registerButton)
+//        contentView.addSubview(registerButton)
+//        contentView.addSubview(showInfoButton)
+        contentView.addSubview(horizontalStack)
+        
+        horizontalStack.addArrangedSubview(registerButton)
+        horizontalStack.addArrangedSubview(showInfoButton)
         
         NSLayoutConstraint.activate([
             errorLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
@@ -155,15 +182,18 @@ class MainViewController: UIViewController {
             phoneTextField.heightAnchor.constraint(equalToConstant: 30),
             phoneTextField.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             
-            registerButton.topAnchor.constraint(equalTo: phoneTextField.bottomAnchor, constant: 30),
-            registerButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
-            registerButton.heightAnchor.constraint(equalToConstant: 30),
-            registerButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            registerButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            horizontalStack.topAnchor.constraint(equalTo: phoneTextField.bottomAnchor, constant: 30),
+            horizontalStack.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
+            horizontalStack.heightAnchor.constraint(equalToConstant: 30),
+            horizontalStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            horizontalStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
             
         ])
     }
     
+    @objc func showList() {
+        
+    }
    
 }
 
@@ -172,14 +202,22 @@ extension MainViewController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let text = textField.text {
-            if manager.validateTextField(text: text) {
-                print("OK")
-                errorLabel.isHidden = true
-                textField.layer.borderColor = UIColor.darkGray.cgColor
+            if textField == mailTextField {
+                if !manager.isValidEmail(email: text) {
+                    errorLabel.isHidden = false
+                    textField.layer.borderColor = UIColor.red.cgColor
+                }
             } else {
-                errorLabel.isHidden = false
-                textField.layer.borderColor = UIColor.red.cgColor
+                
             }
+//            if manager.validateTextField(text: text) {
+//                print("OK")
+//                errorLabel.isHidden = true
+//                textField.layer.borderColor = UIColor.darkGray.cgColor
+//            } else {
+//                errorLabel.isHidden = false
+//                textField.layer.borderColor = UIColor.red.cgColor
+//            }
         }
     }
 }
