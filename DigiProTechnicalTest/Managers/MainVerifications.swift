@@ -11,8 +11,6 @@ class MainVerifications {
     
     static let shared = MainVerifications()
     
-//    init() {}
-    
     func validateTextField(text: String) -> Bool {
         let characterSetNotAllowed = CharacterSet.whitespacesAndNewlines
         if text.rangeOfCharacter(from: characterSetNotAllowed) != nil {
@@ -29,6 +27,5 @@ class MainVerifications {
         let emailPredicate = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailPredicate.evaluate(with: email)
     }
-    
     
 }

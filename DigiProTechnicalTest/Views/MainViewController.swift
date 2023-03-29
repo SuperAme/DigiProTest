@@ -8,9 +8,6 @@
 import UIKit
 import SwiftUI
 
-//TODO
-//bug keyboard hide textfield
-
 class MainViewController: UIViewController {
     
     private let manager = MainVerifications()
@@ -25,6 +22,7 @@ class MainViewController: UIViewController {
         view.backgroundColor = .white
         setupScrollView()
         setupViews()
+        setupKeyboard()
         
         nameTextField.delegate = self
         firstLastNameTextField.delegate = self
@@ -207,23 +205,13 @@ class MainViewController: UIViewController {
     @objc func saveUserInfo() {
         registerButton.bounce()
         if let name = nameTextField.text, let lastName = firstLastNameTextField.text, let secondLastName = secondLastNameTextField.text, let mail = mailTextField.text, let phone = Int64(phoneTextField.text!) {
-            managerCoreData.saveUSerInfo(name: name, firstLastName: lastName, secondLastName: secondLastName, email: mail, phone: phone)
+            managerCoreData.saveUserInfo(name: name, firstLastName: lastName, secondLastName: secondLastName, email: mail, phone: phone)
             self.navigationController?.pushViewController(swiftUIVC, animated: true)
         }
-        
-    }
-    
-    func createAlert() {
-        var dialogMessage = UIAlertController(title: "Felicidades!", message: "Usuario creado Exitosamente!", preferredStyle: .alert)
-        let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
-        })
-        dialogMessage.addAction(ok)
-        self.present(dialogMessage, animated: true, completion: nil)
     }
 }
 
 extension MainViewController: UITextFieldDelegate {
-    
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let text = textField.text {
@@ -237,7 +225,6 @@ extension MainViewController: UITextFieldDelegate {
                 
             } else {
                 if manager.validateTextField(text: text) {
-                    print("OK")
                     errorLabel.isHidden = true
                     textField.layer.borderColor = UIColor.darkGray.cgColor
                 } else {
@@ -283,6 +270,24 @@ extension MainViewController {
         phoneTextField.layer.borderColor = UIColor.darkGray.cgColor
         
         errorLabel.isHidden = true
+    }
+    
+    private func setupKeyboard() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardWillShow(sender: NSNotification) {
+        if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
+            view.frame.origin.y = view.frame.origin.y - 200
+        } else if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
+            view.frame.origin.y = view.frame.origin.y - 200
+        }
+        
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        view.frame.origin.y = 0
     }
 }
 

@@ -34,7 +34,7 @@ class CoreDataManager: ObservableObject {
         }
     }
     
-    func saveUSerInfo(name: String, firstLastName: String, secondLastName: String, email: String, phone: Int64) {
+    func saveUserInfo(name: String, firstLastName: String, secondLastName: String, email: String, phone: Int64) {
         let newInfo = User(context: container.viewContext)
         newInfo.name = name
         newInfo.firstLastName = firstLastName

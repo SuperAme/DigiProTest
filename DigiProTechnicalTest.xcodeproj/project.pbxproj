@@ -64,19 +64,43 @@
 		9CA92C6F29D39842001F2B8D /* DigiProTechnicalTest */ = {
 			isa = PBXGroup;
 			children = (
+				9CA92C9529D4A570001F2B8D /* Managers */,
+				9CA92C9429D4A55B001F2B8D /* Views */,
+				9CA92C9329D4A546001F2B8D /* Extensions */,
 				9CA92C7029D39842001F2B8D /* AppDelegate.swift */,
 				9CA92C7229D39842001F2B8D /* SceneDelegate.swift */,
-				9CA92C7429D39842001F2B8D /* MainViewController.swift */,
-				9CA92C9129D49AE9001F2B8D /* UIButton+Extensions.swift */,
 				9CA92C8A29D40370001F2B8D /* InfoContainer.xcdatamodeld */,
 				9CA92C7929D39843001F2B8D /* Assets.xcassets */,
 				9CA92C7B29D39843001F2B8D /* LaunchScreen.storyboard */,
 				9CA92C7E29D39843001F2B8D /* Info.plist */,
-				9CA92C8429D3A5C0001F2B8D /* MainVerifications.swift */,
-				9CA92C8629D3F68E001F2B8D /* InfoListView.swift */,
-				9CA92C8829D40317001F2B8D /* CoreDataManager.swift */,
 			);
 			path = DigiProTechnicalTest;
+			sourceTree = "<group>";
+		};
+		9CA92C9329D4A546001F2B8D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				9CA92C9129D49AE9001F2B8D /* UIButton+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		9CA92C9429D4A55B001F2B8D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9CA92C7429D39842001F2B8D /* MainViewController.swift */,
+				9CA92C8629D3F68E001F2B8D /* InfoListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9CA92C9529D4A570001F2B8D /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				9CA92C8429D3A5C0001F2B8D /* MainVerifications.swift */,
+				9CA92C8829D40317001F2B8D /* CoreDataManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
