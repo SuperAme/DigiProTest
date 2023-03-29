@@ -8,9 +8,14 @@
 import UIKit
 import SwiftUI
 
+//TODO
+//bug keyboard hide textfield
+
 class MainViewController: UIViewController {
     
     private let manager = MainVerifications()
+    private let managerCoreData = CoreDataManager()
+    let swiftUIVC = UIHostingController(rootView: InfoListView())
     
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -26,6 +31,10 @@ class MainViewController: UIViewController {
         secondLastNameTextField.delegate = self
         mailTextField.delegate = self
         phoneTextField.delegate = self
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        resetForm()
     }
     
     let errorLabel: UILabel = {
@@ -97,18 +106,20 @@ class MainViewController: UIViewController {
         return hStack
     }()
     
-    let registerButton: UIButton = {
+    lazy var registerButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .systemBlue
+        button.alpha = 0.5
         button.setTitle("Registrar", for: .normal)
         button.tintColor = .white
         button.layer.cornerRadius = 10
-        //        button.addTarget(self, action: #selector(onLoginTouch), for: .touchUpInside)
+        button.isEnabled = false
+        button.addTarget(self, action: #selector(saveUserInfo), for: .touchUpInside)
         return button
     }()
     
-    let showInfoButton: UIButton = {
+    lazy var showInfoButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .systemBlue
@@ -125,7 +136,6 @@ class MainViewController: UIViewController {
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
-        
         
         scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
@@ -191,10 +201,25 @@ class MainViewController: UIViewController {
     }
     
     @objc func showList() {
-        let swiftUIVC = UIHostingController(rootView: InfoListView())
         self.navigationController?.pushViewController(swiftUIVC, animated: true)
     }
-   
+    
+    @objc func saveUserInfo() {
+        registerButton.bounce()
+        if let name = nameTextField.text, let lastName = firstLastNameTextField.text, let secondLastName = secondLastNameTextField.text, let mail = mailTextField.text, let phone = Int64(phoneTextField.text!) {
+            managerCoreData.saveUSerInfo(name: name, firstLastName: lastName, secondLastName: secondLastName, email: mail, phone: phone)
+            self.navigationController?.pushViewController(swiftUIVC, animated: true)
+        }
+        
+    }
+    
+    func createAlert() {
+        var dialogMessage = UIAlertController(title: "Felicidades!", message: "Usuario creado Exitosamente!", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
+        })
+        dialogMessage.addAction(ok)
+        self.present(dialogMessage, animated: true, completion: nil)
+    }
 }
 
 extension MainViewController: UITextFieldDelegate {
@@ -206,19 +231,58 @@ extension MainViewController: UITextFieldDelegate {
                 if !manager.isValidEmail(email: text) {
                     errorLabel.isHidden = false
                     textField.layer.borderColor = UIColor.red.cgColor
+                } else {
+                    textField.layer.borderColor = UIColor.darkGray.cgColor
                 }
-            } else {
                 
+            } else {
+                if manager.validateTextField(text: text) {
+                    print("OK")
+                    errorLabel.isHidden = true
+                    textField.layer.borderColor = UIColor.darkGray.cgColor
+                } else {
+                    errorLabel.isHidden = false
+                    textField.layer.borderColor = UIColor.red.cgColor
+                }
             }
-//            if manager.validateTextField(text: text) {
-//                print("OK")
-//                errorLabel.isHidden = true
-//                textField.layer.borderColor = UIColor.darkGray.cgColor
-//            } else {
-//                errorLabel.isHidden = false
-//                textField.layer.borderColor = UIColor.red.cgColor
-//            }
+            
         }
+        checkForm()
+    }
+}
+
+extension MainViewController {
+    func checkForm() {
+        if let mail = mailTextField.text {
+            if errorLabel.isHidden && manager.isValidEmail(email: mail) && !nameTextField.text!.isEmpty, !firstLastNameTextField.text!.isEmpty,
+               !secondLastNameTextField.text!.isEmpty, !phoneTextField.text!.isEmpty {
+                registerButton.isEnabled = true
+                registerButton.alpha = 1.0
+            } else {
+                registerButton.isEnabled = false
+                registerButton.alpha = 0.5
+            }
+        }
+        
+    }
+    
+    func resetForm() {
+        nameTextField.text = ""
+        nameTextField.layer.borderColor = UIColor.darkGray.cgColor
+        
+        firstLastNameTextField.text = ""
+        firstLastNameTextField.layer.borderColor = UIColor.darkGray.cgColor
+        
+        secondLastNameTextField.text = ""
+        secondLastNameTextField.layer.borderColor = UIColor.darkGray.cgColor
+        
+        mailTextField.text = ""
+        mailTextField.layer.borderColor = UIColor.darkGray.cgColor
+        
+        phoneTextField.text = ""
+        phoneTextField.layer.borderColor = UIColor.darkGray.cgColor
+        
+        errorLabel.isHidden = true
     }
 }
 

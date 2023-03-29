@@ -8,8 +8,25 @@
 import SwiftUI
 
 struct InfoListView: View {
+    @StateObject var vm = CoreDataManager()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            ForEach(vm.savedEntities) { entity in
+                HStack {
+                    Image(systemName: "person.circle")
+                        .font(.system(size: 50))
+                    VStack {
+                        HStack {
+                            Text(entity.name ?? "")
+                            Text(entity.firstLastName ?? "")
+                        }
+                        Text(String(entity.number))
+                        Text(entity.mail ?? "")
+                    }
+                }
+            }
+        }
     }
 }
 
