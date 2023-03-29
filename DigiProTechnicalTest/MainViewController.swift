@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class MainViewController: UIViewController {
     
@@ -144,8 +145,6 @@ class MainViewController: UIViewController {
         contentView.addSubview(secondLastNameTextField)
         contentView.addSubview(mailTextField)
         contentView.addSubview(phoneTextField)
-//        contentView.addSubview(registerButton)
-//        contentView.addSubview(showInfoButton)
         contentView.addSubview(horizontalStack)
         
         horizontalStack.addArrangedSubview(registerButton)
@@ -192,7 +191,8 @@ class MainViewController: UIViewController {
     }
     
     @objc func showList() {
-        
+        let swiftUIVC = UIHostingController(rootView: InfoListView())
+        self.navigationController?.pushViewController(swiftUIVC, animated: true)
     }
    
 }
