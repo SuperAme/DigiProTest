@@ -11,7 +11,7 @@ import SwiftUI
 class MainViewController: UIViewController {
     
     private let manager = MainVerifications()
-    private let managerCoreData = CoreDataManager()
+    private let addInfoVM = addUserViewModel()
     let swiftUIVC = UIHostingController(rootView: InfoListView())
     
     let scrollView = UIScrollView()
@@ -20,6 +20,7 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        
         setupScrollView()
         setupViews()
         setupKeyboard()
@@ -203,9 +204,8 @@ class MainViewController: UIViewController {
     }
     
     @objc func saveUserInfo() {
-        registerButton.bounce()
-        if let name = nameTextField.text, let lastName = firstLastNameTextField.text, let secondLastName = secondLastNameTextField.text, let mail = mailTextField.text, let phone = Int64(phoneTextField.text!) {
-            managerCoreData.saveUserInfo(name: name, firstLastName: lastName, secondLastName: secondLastName, email: mail, phone: phone)
+        if let name = nameTextField.text, let lastName = firstLastNameTextField.text, let secondLastName = secondLastNameTextField.text, let mail = mailTextField.text, let phone = phoneTextField.text {
+            addInfoVM.saveUserInfo(name: name, firstLastName: lastName, secondLastName: secondLastName, email: mail, phone: phone)
             self.navigationController?.pushViewController(swiftUIVC, animated: true)
         }
     }
@@ -270,6 +270,9 @@ extension MainViewController {
         phoneTextField.layer.borderColor = UIColor.darkGray.cgColor
         
         errorLabel.isHidden = true
+        
+        registerButton.isEnabled = false
+        registerButton.alpha = 0.5
     }
     
     private func setupKeyboard() {

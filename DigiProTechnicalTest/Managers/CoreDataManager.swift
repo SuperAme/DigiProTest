@@ -9,11 +9,11 @@ import Foundation
 import CoreData
 import SwiftUI
 
-class CoreDataManager: ObservableObject {
+class CoreDataManager {
     let container: NSPersistentContainer
-    @Published var savedEntities: [User] = []
+    static let shared = CoreDataManager()
     
-    init() {
+    private init() {
         container = NSPersistentContainer(name: "InfoContainer")
         container.loadPersistentStores { description, error in
             if let error = error {
@@ -22,26 +22,15 @@ class CoreDataManager: ObservableObject {
                 print("Succesfully loaded Coredata")
             }
         }
-        fetchUsersinfo()
     }
     
-    func fetchUsersinfo() {
-        let request = NSFetchRequest<User>(entityName: "User")
+    func fetchUsersinfo() -> [User] {
+        let request: NSFetchRequest<User> = User.fetchRequest()
         do {
-            savedEntities = try container.viewContext.fetch(request)
-        } catch let error {
-            print("Error Fetching \(error)")
+            return try container.viewContext.fetch(request)
+        } catch {
+            return []
         }
-    }
-    
-    func saveUserInfo(name: String, firstLastName: String, secondLastName: String, email: String, phone: Int64) {
-        let newInfo = User(context: container.viewContext)
-        newInfo.name = name
-        newInfo.firstLastName = firstLastName
-        newInfo.secondLastName = secondLastName
-        newInfo.mail = email
-        newInfo.number = phone
-        saveData()
     }
     
     func saveData() {
