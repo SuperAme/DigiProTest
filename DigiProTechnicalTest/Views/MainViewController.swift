@@ -200,6 +200,7 @@ class MainViewController: UIViewController {
     }
     
     @objc func showList() {
+        resetForm()
         self.navigationController?.pushViewController(swiftUIVC, animated: true)
     }
     
